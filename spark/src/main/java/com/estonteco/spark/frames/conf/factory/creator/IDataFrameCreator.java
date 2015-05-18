@@ -8,6 +8,7 @@ package com.estonteco.spark.frames.conf.factory.creator;
 import com.estonteco.spark.frames.FrameType;
 import com.estonteco.spark.frames.IDataFrame;
 import com.estonteco.spark.frames.conf.IDataFrameConf;
+import org.apache.spark.sql.SQLContext;
 
 /**
  *
@@ -15,7 +16,7 @@ import com.estonteco.spark.frames.conf.IDataFrameConf;
  */
 public interface IDataFrameCreator<T extends IDataFrameConf> {
 
-    IDataFrame create(T configuration);
+    IDataFrame create(SQLContext context, T configuration);
     
     FrameType support();
 

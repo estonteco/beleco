@@ -10,6 +10,8 @@ import com.estonteco.spark.frames.conf.factory.creator.IDataFrameCreator;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
+import org.apache.spark.api.java.JavaSparkContext;
+import org.apache.spark.sql.SQLContext;
 
 /**
  * Type of stored session for dataframes processing (has unique identifier).
@@ -30,4 +32,9 @@ public interface IDataFrameSessionContext {
     Collection<IDataFrameCreator> getDataFrameCreators();
     
     String getSessionContextId();
+    
+    JavaSparkContext getJavaSparkContext();
+    
+    SQLContext getSQLContext();
+    
 }

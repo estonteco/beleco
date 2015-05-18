@@ -14,6 +14,8 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.EnumMap;
 import java.util.Map;
+import org.apache.spark.api.java.JavaSparkContext;
+import org.apache.spark.sql.SQLContext;
 
 /**
  *
@@ -26,19 +28,33 @@ public class DataFrameSessionContext implements IDataFrameSessionContext {
     private String sessionContextId;
     private IDataSourceManager dataSourceManager;
     private Map properties;
+    private JavaSparkContext javaSparkContext;
+    private SQLContext sqlContext;
 
     public void init(Map properties) {
         this.properties = properties;
+        javaSparkContext = new JavaSparkContext("local", "Test");
+        sqlContext = new SQLContext(javaSparkContext);
         //load configuration (by credentials)
         Collection<IDataFrameConf> configurations = load();
+        assert (configurations!=null && !configurations.isEmpty());
         for(IDataFrameConf conf: configurations){
             FrameType frameType = FrameType.valueOf(conf.getType());
             IDataFrameCreator dataFrameCreator = dataFrameCreatorsMap.get(frameType);
-            IDataFrame dataFrame = dataFrameCreator.create(conf);
+            IDataFrame dataFrame = dataFrameCreator.create(sqlContext, conf);
             dataSourceManager.register(dataFrame);
         }
     }
 
+    public JavaSparkContext getJavaSparkContext() {
+        return javaSparkContext;
+    }
+
+    public SQLContext getSQLContext() {
+        return sqlContext;
+    }
+    
+    
     public Collection<IDataFrameConf> load() {
         return new ArrayList<IDataFrameConf>();
     }

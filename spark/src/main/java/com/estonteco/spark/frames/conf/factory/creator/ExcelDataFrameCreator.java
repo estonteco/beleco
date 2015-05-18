@@ -9,6 +9,8 @@ package com.estonteco.spark.frames.conf.factory.creator;
 import com.estonteco.spark.frames.FrameType;
 import com.estonteco.spark.frames.IDataFrame;
 import com.estonteco.spark.frames.excel.ExcelFrameConf;
+import org.apache.spark.sql.DataFrame;
+import org.apache.spark.sql.SQLContext;
 
 /**
  *
@@ -16,7 +18,9 @@ import com.estonteco.spark.frames.excel.ExcelFrameConf;
  */
 public class ExcelDataFrameCreator implements IDataFrameCreator<ExcelFrameConf>{
 
-    public IDataFrame create(ExcelFrameConf configuration) {
+    public IDataFrame create(SQLContext context, ExcelFrameConf configuration) {
+        DataFrame table = context.load(null, configuration.getSchema(), configuration.getProperties());
+        table.registerTempTable(configuration.getName());
         return null;
     }
 

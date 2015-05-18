@@ -2,6 +2,7 @@ package com.estonteco.spark;
 
 import java.util.Arrays;
 import java.util.List;
+import org.apache.spark.SparkConf;
 import org.apache.spark.api.java.*;
 import org.apache.spark.sql.DataFrame;
 import org.apache.spark.sql.Row;
