@@ -5,7 +5,10 @@
  */
 package com.estonteco.spark.frames.conf.factory;
 
+import com.estonteco.spark.frames.conf.IDataFrameConf;
+import com.estonteco.spark.frames.conf.factory.creator.IDataFrameCreator;
 import java.util.Collection;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -20,9 +23,11 @@ public interface IDataFrameSessionContext {
      */
     void init(Map properties);
     
-    void registerDataFrameSerializer(IDataFrameSerializer dataFrameSerializer);
+    Collection<IDataFrameConf> load();
     
-    Collection<IDataFrameSerializer> getDataFrameSerializers();
+    void registerDataFrameCreator(IDataFrameCreator dataFrameCreator);
+    
+    Collection<IDataFrameCreator> getDataFrameCreators();
     
     String getSessionContextId();
 }

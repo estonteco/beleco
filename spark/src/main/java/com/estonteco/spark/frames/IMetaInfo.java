@@ -5,7 +5,7 @@
  */
 package com.estonteco.spark.frames;
 
-import com.estonteco.spark.frames.conf.IFrameConf;
+import com.estonteco.spark.frames.conf.IDataFrameConf;
 import java.util.Collection;
 
 /**
@@ -23,5 +23,5 @@ public interface IMetaInfo<T> {
      
     Collection<T> getAvailableFields();
 
-    IFrameConf getConfiguration();
+    IDataFrameConf getConfiguration();
 }

@@ -5,13 +5,13 @@
  */
 package com.estonteco.spark.frames.jdbc;
 
-import com.estonteco.spark.frames.conf.IFrameConf;
+import com.estonteco.spark.frames.conf.IDataFrameConf;
 
 /**
  *
  * @author mauna
  */
-public interface IJdbcFrameConf extends IFrameConf {
+public interface IJdbcFrameConf extends IDataFrameConf {
     
     String getJdbcDriverName();
     

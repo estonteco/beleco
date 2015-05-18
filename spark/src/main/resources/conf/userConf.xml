@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<conf>
+    <name>UserConf</name>
+    <type>EXCEL</type>
+    <URL>D:\user.xsl</URL>
+    <schema>
+        <column name="NAME" type="StringType" nullable="false"/>
+        <column name="AGE" type="IntegerType" nullable="false"/>
+        <column name="INTERNAL" type="BooleanType" nullable="false"/>
+    </schema>
+    <properties>
+        <entry>
+            <key>user</key>
+            <value>asdasda</value>
+        </entry>
+    </properties>
+</conf>

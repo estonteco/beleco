@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<conf>
+    <name>CountryConf</name>
+    <type>EXCEL</type>
+    <URL>D:\country.xsl</URL>
+    <schema>
+        <column name="NAME" type="StringType" nullable="false"/>
+        <column name="PERCENT" type="DoubleType" nullable="true"/>
+    </schema>
+    <properties>
+        <entry>
+            <key>user</key>
+            <value>asdasda</value>
+        </entry>
+    </properties>
+</conf>
