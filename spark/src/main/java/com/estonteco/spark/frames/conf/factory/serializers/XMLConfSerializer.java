@@ -6,7 +6,7 @@
 package com.estonteco.spark.frames.conf.factory.serializers;
 
 import com.estonteco.spark.frames.conf.IDataFrameConf;
-import com.estonteco.spark.frames.excel.ExcelFrameConf;
+import com.estonteco.spark.frames.conf.impl.DefaultFrameConf;
 import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
 import java.util.logging.Level;
@@ -15,7 +15,6 @@ import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
 import javax.xml.bind.Unmarshaller;
-import org.apache.spark.sql.types.StructType;
 
 /**
  *
@@ -23,12 +22,23 @@ import org.apache.spark.sql.types.StructType;
  */
 public class XMLConfSerializer {
 
+    private static JAXBContext jaxbContext;
+            
+    static{
+        try {
+            jaxbContext = JAXBContext.newInstance(DefaultFrameConf.class);
+        } catch (JAXBException ex) {
+            throw new RuntimeException("JAXBContext initialization failed", ex);
+        }  
+    }
+    
+    
     public static byte[] serialize(IDataFrameConf conf) {
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         try {
-            JAXBContext jaxbContext = JAXBContext.newInstance(conf.getClass());
+            
             Marshaller jaxbMarshaller = jaxbContext.createMarshaller();
-            jaxbMarshaller.setProperty(jaxbMarshaller.JAXB_FORMATTED_OUTPUT, true);
+            jaxbMarshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
             jaxbMarshaller.marshal(conf, baos);
         } catch (JAXBException ex) {
             throw new RuntimeException("Conf serialization failed", ex);
@@ -36,10 +46,9 @@ public class XMLConfSerializer {
         return baos.toByteArray();
     }
 
-    public static IDataFrameConf deserialize(InputStream inputStream, 
-            Class<? extends IDataFrameConf> clazz) {
+    
+     public static IDataFrameConf deserialize(InputStream inputStream) {
         try {
-            JAXBContext jaxbContext = JAXBContext.newInstance(clazz);
             Unmarshaller jaxbUnmarshaller = jaxbContext.createUnmarshaller();
             return (IDataFrameConf) jaxbUnmarshaller.unmarshal(inputStream);
         } catch (JAXBException ex) {

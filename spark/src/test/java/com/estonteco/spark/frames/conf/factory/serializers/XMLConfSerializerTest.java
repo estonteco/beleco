@@ -8,12 +8,11 @@ package com.estonteco.spark.frames.conf.factory.serializers;
 
 import com.estonteco.spark.frames.FrameType;
 import com.estonteco.spark.frames.conf.IDataFrameConf;
-import com.estonteco.spark.frames.excel.ExcelFrameConf;
+import com.estonteco.spark.frames.conf.impl.DefaultFrameConf;
 import java.io.InputStream;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
-import org.apache.spark.sql.types.DataType;
 import org.apache.spark.sql.types.DataTypes;
 import org.apache.spark.sql.types.StructField;
 import org.apache.spark.sql.types.StructType;
@@ -55,22 +54,23 @@ public class XMLConfSerializerTest {
     @Test
     public void testSerialize() {
         System.out.println("serialize");
-        ExcelFrameConf conf = new ExcelFrameConf();
+        DefaultFrameConf conf = new DefaultFrameConf();
         conf.setName("UserConf");
-        conf.setType(FrameType.EXCEL.name());
-        conf.setURL("D:\\test.xsl");
+        conf.setType(FrameType.FILE.name());
         Map<String,String> properties = new HashMap<String, String>();
         properties.put("user", "asdasda");
+        properties.put("URL", "D:\\test.xsl");
         conf.setProperties(properties);
         
+        StructField columnName0 = DataTypes.createStructField("COUNTRY_ID", DataTypes.StringType, false);
         StructField columnName1 = DataTypes.createStructField("NAME", DataTypes.StringType, false);
         StructField columnName2 = DataTypes.createStructField("AGE", DataTypes.IntegerType, false);
-        StructType schema = DataTypes.createStructType(Arrays.asList(columnName1,columnName2));
+        StructType schema = DataTypes.createStructType(Arrays.asList(columnName0,columnName1,columnName2));
         conf.setSchema(schema);
         
         System.out.println(new String(XMLConfSerializer.serialize(conf)));
         InputStream resourceAsStream = XMLConfSerializerTest.class.getResourceAsStream("/conf/userConf.xml");
-        IDataFrameConf deserializedConf = XMLConfSerializer.deserialize(resourceAsStream,ExcelFrameConf.class);
+        IDataFrameConf deserializedConf = XMLConfSerializer.deserialize(resourceAsStream);
         Assert.assertEquals(conf,deserializedConf);
         
         System.out.println(deserializedConf.getSchema().toString());

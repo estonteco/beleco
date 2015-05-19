@@ -6,18 +6,26 @@
 package com.estonteco.spark.frames.conf.factory;
 
 import com.estonteco.spark.engine.IDataSourceManager;
+import com.estonteco.spark.engine.impl.DataSourceManager;
 import com.estonteco.spark.frames.IDataFrame;
+import com.estonteco.spark.frames.State;
 import com.estonteco.spark.frames.conf.IDataFrameConf;
-import com.estonteco.spark.frames.conf.factory.creator.ExcelDataFrameCreator;
+import com.estonteco.spark.frames.conf.factory.creator.impl.CustomDataFrameCreator;
+import com.estonteco.spark.frames.conf.factory.creator.impl.TextFileFrameCreator;
 import com.estonteco.spark.frames.conf.factory.serializers.XMLConfSerializer;
-import com.estonteco.spark.frames.excel.ExcelFrameConf;
+import com.estonteco.spark.frames.conf.impl.DefaultFrameConf;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import org.apache.spark.sql.DataFrame;
+import org.apache.spark.sql.Row;
+import org.apache.spark.sql.SQLContext;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Assert;
@@ -34,7 +42,6 @@ public class DataFrameSessionContextTest {
 
     private static DataFrameSessionContext instance;
     private static IDataSourceManager dataSourceManager;
-    
 
     public DataFrameSessionContextTest() {
     }
@@ -42,10 +49,10 @@ public class DataFrameSessionContextTest {
     @BeforeClass
     public static void setUpClass() {
         instance = spy(new DataFrameSessionContext());
-        instance.registerDataFrameCreator(new ExcelDataFrameCreator());
-        when(instance.load()).thenReturn(loadByPath(System.getProperty("user.dir")+"/src/main/resources/conf"));
-        dataSourceManager = mock(IDataSourceManager.class);
-        dataSourceManager.register(any(IDataFrame.class));
+        instance.registerDataFrameCreator(new TextFileFrameCreator());
+        instance.registerDataFrameCreator(new CustomDataFrameCreator());
+        when(instance.load()).thenReturn(loadByPath(System.getProperty("user.dir") + "/src/main/resources/conf"));
+        dataSourceManager = new DataSourceManager();
         instance.setDataSourceManager(dataSourceManager);
     }
 
@@ -62,7 +69,7 @@ public class DataFrameSessionContextTest {
                 } catch (FileNotFoundException ex) {
                     ex.printStackTrace();
                 }
-                IDataFrameConf deserializedConf = XMLConfSerializer.deserialize(fileInputStream,ExcelFrameConf.class);
+                IDataFrameConf deserializedConf = XMLConfSerializer.deserialize(fileInputStream);
                 dataFrameConfs.add(deserializedConf);
             }
         }
@@ -90,24 +97,64 @@ public class DataFrameSessionContextTest {
         Map properties = new HashMap();
         instance.init(properties);
         Assert.assertNotNull(instance);
-        
     }
+
+    @Test
+    public void testBrowseAll() {
+        Map properties = new HashMap();
+        instance.init(properties);
+        System.out.println("browseAll");
+        Collection<IDataFrame> browseAll = dataSourceManager.browseAll();
+        System.out.println(browseAll);
+        Assert.assertNotNull(browseAll);
+        for (IDataFrame df : browseAll) {
+            Assert.assertTrue(df.getState() == State.REGISTERED);
+        }
+    }
+
+    @Test
+    public void testGetCountry() {
+        Map properties = new HashMap();
+        instance.init(properties);
+        System.out.println("getCountry");
+        IDataFrame df = dataSourceManager.get("Countries");
+        Assert.assertNotNull(df);
+        Row ping = (Row) df.ping();
+        System.out.println(ping);
+        Collection<Row> execute = df.execute(null);
+        for (Row row : execute) {
+            System.out.println(row);
+        }
+    }
+
+    @Test
+    public void testGetUser() {
+        Map properties = new HashMap();
+        instance.init(properties);
+        System.out.println("getUser");
+        IDataFrame df = dataSourceManager.get("Users");
+        Assert.assertNotNull(df);
+        Row ping = (Row) df.ping();
+        System.out.println(ping);
+        Collection<Row> execute = df.execute(null);
+        for (Row row : execute) {
+            System.out.println(row);
+        }
+    }
+
+    @Test
+    public void testGetView() {
+        Map properties = new HashMap();
+        instance.init(properties);
+        System.out.println("getView");
+        IDataFrame df = dataSourceManager.get("View");
+        Assert.assertNotNull(df);
+        Collection<Row> execute = df.execute(null);
+        for (Row row : execute) {
+            System.out.println(row);
+        }
     
-
-//    /**
-//     * Test of load method, of class DataFrameSessionContext.
-//     */
-//    @Test
-//    public void testLoad() {
-//        System.out.println("load");
-//        DataFrameSessionContext instance = new DataFrameSessionContext();
-//        Collection<IDataFrameConf> expResult = null;
-//        Collection<IDataFrameConf> result = instance.load();
-//        assertEquals(expResult, result);
-//        // TODO review the generated test code and remove the default call to fail.
-//        fail("The test case is a prototype.");
-//    }
-
+    }
 
     /**
      * Test of getDataFrameCreators method, of class DataFrameSessionContext.

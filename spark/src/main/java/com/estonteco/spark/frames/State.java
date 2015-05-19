@@ -11,6 +11,8 @@ package com.estonteco.spark.frames;
  */
 public enum State {
     
+    UNKNOWN,
+    INIT,
     REGISTERED,
     UNREGISTERED,
     RUNNING,

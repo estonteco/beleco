@@ -1,0 +1,3 @@
+COUNTRY_ID,NAME,PERCENT
+UA,Ukraine,12
+PL,Poland,45

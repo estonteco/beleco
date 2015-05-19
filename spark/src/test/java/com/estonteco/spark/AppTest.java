@@ -1,6 +1,7 @@
 package com.estonteco.spark;
 
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
 import org.apache.spark.SparkConf;
 import org.apache.spark.api.java.*;
@@ -36,5 +37,6 @@ public class AppTest {
         name.registerTempTable("test");
         DataFrame sql = sqlContext.sql("select * from test where NAME='13412'");
         sql.show();
+
     }
 }

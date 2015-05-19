@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <conf>
-    <name>Users</name>
-    <type>FILE</type>
+    <name>View</name>
+    <type>CUSTOM</type>
     <schema>
         <column name="COUNTRY_ID" type="StringType" nullable="false"/>
         <column name="NAME" type="StringType" nullable="false"/>
@@ -9,9 +9,9 @@
         <column name="INTERNAL" type="BooleanType" nullable="false"/>
     </schema>
     <properties>
-         <entry>
-            <key>URL</key>
-            <value>D:\Projects\beleco\spark\src\main\resources\file\user.txt</value>
+        <entry>
+            <key>query</key>
+            <value>SELECT C.NAME,I.NAME FROM Users C JOIN Countries I ON C.COUNTRY_ID= I.COUNTRY_ID</value>
         </entry>
     </properties>
 </conf>

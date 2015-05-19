@@ -24,5 +24,5 @@ public interface IDataSourceManager {
     
     void handleRegisterException(Exception ex);
     
-    void ping(String name);
+    Object ping(String name);
 }

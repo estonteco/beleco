@@ -19,10 +19,6 @@ public interface IDataFrameConf {
 
     void setName(String name);
 
-    String getURL();
-
-    void setURL(String URL);
-
     Map<String,String> getProperties();
 
     void setProperties(Map<String,String> properties);

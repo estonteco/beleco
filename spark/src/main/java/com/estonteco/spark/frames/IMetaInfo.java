@@ -19,9 +19,11 @@ public interface IMetaInfo<T> {
 
     String geName();
     
-    String getType();
+    FrameType getType();
      
     Collection<T> getAvailableFields();
+    
+    Collection<String> getAvailableFieldsNames();
 
     IDataFrameConf getConfiguration();
 }

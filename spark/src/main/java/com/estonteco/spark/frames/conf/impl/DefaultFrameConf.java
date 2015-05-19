@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.estonteco.spark.frames.excel;
+package com.estonteco.spark.frames.conf.impl;
 
 import com.estonteco.spark.frames.conf.IDataFrameConf;
 import com.estonteco.spark.frames.conf.factory.serializers.StructTypeJAXBAdapter;
@@ -16,28 +16,28 @@ import org.apache.spark.sql.types.StructType;
 
 /**
  *
- * @author mauna
+ * @author APolokh
  */
+
 @XmlRootElement(name = "conf")
-@XmlType(propOrder={"name", "type", "URL", "schema","properties"})
-public class ExcelFrameConf implements IDataFrameConf {
+@XmlType(propOrder={"name", "type", "schema", "properties"})
+public class DefaultFrameConf implements IDataFrameConf {
 
-    private String name;
-    private String type;
-    private String URL;
-    private StructType schema;
-    private Map<String,String> properties;
+    protected String name;
+    protected String type;
+    protected StructType schema;
+    protected Map<String, String> properties;
 
-    public ExcelFrameConf() {
+    public DefaultFrameConf() {
     }
 
-    public ExcelFrameConf(String name, String type, String URL, StructType schema, Map properties) {
+    public DefaultFrameConf(String name, String type, StructType schema, Map<String, String> properties) {
         this.name = name;
         this.type = type;
-        this.URL = URL;
         this.schema = schema;
         this.properties = properties;
     }
+
 
     public String getName() {
         return name;
@@ -55,30 +55,24 @@ public class ExcelFrameConf implements IDataFrameConf {
         this.type = type;
     }
 
-    public String getURL() {
-        return URL;
-    }
 
-    public void setURL(String URL) {
-        this.URL = URL;
-    }
-
-   
     public StructType getSchema() {
         return schema;
     }
 
+   
     @XmlElement
     @XmlJavaTypeAdapter(type = StructType.class, value = StructTypeJAXBAdapter.class)
+    @Override
     public void setSchema(StructType schema) {
         this.schema = schema;
     }
 
-    public Map<String,String> getProperties() {
+    public Map<String, String> getProperties() {
         return properties;
     }
 
-    public void setProperties(Map<String,String> properties) {
+    public void setProperties(Map<String, String> properties) {
         this.properties = properties;
     }
 
@@ -98,7 +92,7 @@ public class ExcelFrameConf implements IDataFrameConf {
         if (getClass() != obj.getClass()) {
             return false;
         }
-        final ExcelFrameConf other = (ExcelFrameConf) obj;
+        final DefaultFrameConf other = (DefaultFrameConf) obj;
         if ((this.name == null) ? (other.name != null) : !this.name.equals(other.name)) {
             return false;
         }
@@ -107,6 +101,4 @@ public class ExcelFrameConf implements IDataFrameConf {
         }
         return true;
     }
-
-    
 }

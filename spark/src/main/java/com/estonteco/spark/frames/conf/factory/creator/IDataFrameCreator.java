@@ -8,15 +8,19 @@ package com.estonteco.spark.frames.conf.factory.creator;
 import com.estonteco.spark.frames.FrameType;
 import com.estonteco.spark.frames.IDataFrame;
 import com.estonteco.spark.frames.conf.IDataFrameConf;
+import java.io.Serializable;
+import java.util.Map;
+import org.apache.spark.api.java.JavaSparkContext;
 import org.apache.spark.sql.SQLContext;
 
 /**
  *
  * @author mauna
+ * @param <T>
  */
-public interface IDataFrameCreator<T extends IDataFrameConf> {
+public interface IDataFrameCreator<T extends IDataFrameConf> extends Serializable{
 
-    IDataFrame create(SQLContext context, T configuration);
+    IDataFrame create(JavaSparkContext sparkContext, SQLContext context, T configuration);
     
     FrameType support();
 

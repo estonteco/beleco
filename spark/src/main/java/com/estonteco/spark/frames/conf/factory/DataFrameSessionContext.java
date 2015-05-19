@@ -10,6 +10,7 @@ import com.estonteco.spark.frames.FrameType;
 import com.estonteco.spark.frames.IDataFrame;
 import com.estonteco.spark.frames.conf.IDataFrameConf;
 import com.estonteco.spark.frames.conf.factory.creator.IDataFrameCreator;
+import com.sun.istack.logging.Logger;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.EnumMap;
@@ -22,63 +23,66 @@ import org.apache.spark.sql.SQLContext;
  * @author APolokh
  */
 public class DataFrameSessionContext implements IDataFrameSessionContext {
-
-    private final Map<FrameType,IDataFrameCreator> dataFrameCreatorsMap
-            = new EnumMap<FrameType,IDataFrameCreator>(FrameType.class);
+    
+    private static final Logger LOGGER = Logger.getLogger(DataFrameSessionContext.class);
+    private final Map<FrameType, IDataFrameCreator> dataFrameCreatorsMap
+            = new EnumMap<FrameType, IDataFrameCreator>(FrameType.class);
     private String sessionContextId;
     private IDataSourceManager dataSourceManager;
     private Map properties;
     private JavaSparkContext javaSparkContext;
     private SQLContext sqlContext;
-
+    
     public void init(Map properties) {
         this.properties = properties;
-        javaSparkContext = new JavaSparkContext("local", "Test");
+        javaSparkContext = new JavaSparkContext("local", System.getProperty("user.name", "horizon"));
         sqlContext = new SQLContext(javaSparkContext);
+        sqlContext.clearCache();
         //load configuration (by credentials)
         Collection<IDataFrameConf> configurations = load();
-        assert (configurations!=null && !configurations.isEmpty());
-        for(IDataFrameConf conf: configurations){
+        assert (configurations != null && !configurations.isEmpty());
+        for (IDataFrameConf conf : configurations) {
             FrameType frameType = FrameType.valueOf(conf.getType());
             IDataFrameCreator dataFrameCreator = dataFrameCreatorsMap.get(frameType);
-            IDataFrame dataFrame = dataFrameCreator.create(sqlContext, conf);
+            if (dataFrameCreator == null) {
+                LOGGER.warning(String.format("Creator instance for type %s is missing", frameType.name()));
+                continue;
+            }
+            IDataFrame dataFrame = dataFrameCreator.create(javaSparkContext,sqlContext, conf);
             dataSourceManager.register(dataFrame);
         }
     }
-
+    
     public JavaSparkContext getJavaSparkContext() {
         return javaSparkContext;
     }
-
+    
     public SQLContext getSQLContext() {
         return sqlContext;
     }
     
-    
     public Collection<IDataFrameConf> load() {
         return new ArrayList<IDataFrameConf>();
     }
-
     
     public void registerDataFrameCreator(IDataFrameCreator dataFrameCreator) {
-        dataFrameCreatorsMap.put(dataFrameCreator.support(),dataFrameCreator);
+        dataFrameCreatorsMap.put(dataFrameCreator.support(), dataFrameCreator);
     }
-
+    
     public Collection<IDataFrameCreator> getDataFrameCreators() {
         return dataFrameCreatorsMap.values();
     }
-
+    
     public String getSessionContextId() {
         return sessionContextId;
     }
-
+    
     public IDataSourceManager getDataSourceManager() {
         return dataSourceManager;
     }
-
+    
     public void setDataSourceManager(IDataSourceManager dataSourceManager) {
         this.dataSourceManager = dataSourceManager;
     }
-
     
 }

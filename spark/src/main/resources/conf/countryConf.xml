@@ -1,16 +1,24 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <conf>
-    <name>CountryConf</name>
-    <type>EXCEL</type>
-    <URL>D:\country.xsl</URL>
+    <name>Countries</name>
+    <type>FILE</type>
     <schema>
+        <column name="COUNTRY_ID" type="StringType" nullable="false"/>
         <column name="NAME" type="StringType" nullable="false"/>
         <column name="PERCENT" type="DoubleType" nullable="true"/>
     </schema>
     <properties>
         <entry>
-            <key>user</key>
-            <value>asdasda</value>
+            <key>header</key>
+            <value>false</value>
+        </entry>
+        <entry>
+            <key>delimiter</key>
+            <value>,</value>
+        </entry>
+         <entry>
+            <key>URL</key>
+            <value>D:\Projects\beleco\spark\src\main\resources\file\country.txt</value>
         </entry>
     </properties>
 </conf>
