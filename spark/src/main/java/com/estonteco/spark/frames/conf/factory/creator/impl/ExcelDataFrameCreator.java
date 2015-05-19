@@ -28,7 +28,6 @@ public class ExcelDataFrameCreator extends AbstractDataFrameCreator{
         //TODO: excel loading
         DataFrame table = context.load(null, configuration.getSchema(), configuration.getProperties());
         table.registerTempTable(configuration.getName());
-        table.cache();
         return new DefaultDataFrame(table,configuration, State.INIT);
     }
 
