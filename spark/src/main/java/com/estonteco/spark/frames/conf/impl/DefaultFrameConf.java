@@ -18,14 +18,14 @@ import org.apache.spark.sql.types.StructType;
  *
  * @author APolokh
  */
-
 @XmlRootElement(name = "conf")
-@XmlType(propOrder={"name", "type", "schema", "properties"})
+@XmlType(propOrder = {"name", "type", "schema", "cache", "properties"})
 public class DefaultFrameConf implements IDataFrameConf {
 
     protected String name;
     protected String type;
     protected StructType schema;
+    protected boolean cache;
     protected Map<String, String> properties;
 
     public DefaultFrameConf() {
@@ -38,6 +38,13 @@ public class DefaultFrameConf implements IDataFrameConf {
         this.properties = properties;
     }
 
+    public boolean isCache() {
+        return cache;
+    }
+
+    public void setCache(boolean isCache) {
+        this.cache = cache;
+    }
 
     public String getName() {
         return name;
@@ -55,12 +62,10 @@ public class DefaultFrameConf implements IDataFrameConf {
         this.type = type;
     }
 
-
     public StructType getSchema() {
         return schema;
     }
 
-   
     @XmlElement
     @XmlJavaTypeAdapter(type = StructType.class, value = StructTypeJAXBAdapter.class)
     @Override

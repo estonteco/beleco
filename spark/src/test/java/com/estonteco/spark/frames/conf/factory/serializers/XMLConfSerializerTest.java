@@ -55,7 +55,7 @@ public class XMLConfSerializerTest {
     public void testSerialize() {
         System.out.println("serialize");
         DefaultFrameConf conf = new DefaultFrameConf();
-        conf.setName("UserConf");
+        conf.setName("Users");
         conf.setType(FrameType.FILE.name());
         Map<String,String> properties = new HashMap<String, String>();
         properties.put("user", "asdasda");

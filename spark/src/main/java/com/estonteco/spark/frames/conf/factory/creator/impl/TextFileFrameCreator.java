@@ -8,7 +8,6 @@ package com.estonteco.spark.frames.conf.factory.creator.impl;
 import com.estonteco.spark.frames.FrameType;
 import com.estonteco.spark.frames.IDataFrame;
 import com.estonteco.spark.frames.State;
-import com.estonteco.spark.frames.conf.factory.creator.impl.AbstractDataFrameCreator;
 import com.estonteco.spark.frames.conf.impl.DefaultFrameConf;
 import com.estonteco.spark.frames.impl.DefaultDataFrame;
 import java.util.Map;
@@ -40,7 +39,9 @@ public class TextFileFrameCreator extends AbstractDataFrameCreator {
 
             public Row call(String record) throws Exception {
                 Object[] cells = new Object[schema.size()];
-                if(!readHeader && rowIndex++==0) return RowFactory.create(cells);
+                if (!readHeader && rowIndex++ == 0) {
+                    return RowFactory.create(cells);
+                }
                 String[] parts = record.split(delimiter);
                 int i = 0;
                 for (StructField sf : schema.fields()) {
@@ -57,7 +58,9 @@ public class TextFileFrameCreator extends AbstractDataFrameCreator {
         });
         DataFrame table = context.createDataFrame(rows, schema);
         table.registerTempTable(configuration.getName());
-        table.cache();
+        if (configuration.isCache()) {
+            table.cache();
+        }
         return new DefaultDataFrame(table, configuration, State.INIT);
     }
 

@@ -2,6 +2,7 @@
 <conf>
     <name>Countries</name>
     <type>FILE</type>
+    <cache>true</cache>
     <schema>
         <column name="COUNTRY_ID" type="StringType" nullable="false"/>
         <column name="NAME" type="StringType" nullable="false"/>

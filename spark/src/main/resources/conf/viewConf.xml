@@ -11,7 +11,7 @@
     <properties>
         <entry>
             <key>query</key>
-            <value>SELECT C.NAME,I.NAME FROM Users C JOIN Countries I ON C.COUNTRY_ID= I.COUNTRY_ID</value>
+            <value>SELECT C.NAME AS USER_NAME,I.NAME AS COUNTRY_NAME FROM Users C JOIN Countries I ON C.COUNTRY_ID= I.COUNTRY_ID</value>
         </entry>
     </properties>
 </conf>

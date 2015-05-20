@@ -15,6 +15,10 @@ import org.apache.spark.sql.types.StructType;
 
 public interface IDataFrameConf {
 
+    boolean isCache();
+    
+    void setCache(boolean isCache);
+    
     String getName();
 
     void setName(String name);
