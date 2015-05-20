@@ -13,19 +13,15 @@ import com.estonteco.spark.frames.conf.IDataFrameConf;
 import com.estonteco.spark.frames.conf.factory.creator.impl.CustomDataFrameCreator;
 import com.estonteco.spark.frames.conf.factory.creator.impl.TextFileFrameCreator;
 import com.estonteco.spark.frames.conf.factory.serializers.XMLConfSerializer;
-import com.estonteco.spark.frames.conf.impl.DefaultFrameConf;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import org.apache.spark.sql.DataFrame;
 import org.apache.spark.sql.Row;
-import org.apache.spark.sql.SQLContext;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Assert;
@@ -153,7 +149,7 @@ public class DataFrameSessionContextTest {
         for (Row row : execute) {
             System.out.println(row);
         }
-    
+        System.out.println(df.getMetaInfo().getAvailableFields());
     }
 
     /**

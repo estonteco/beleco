@@ -32,6 +32,12 @@ public class DefaultDataFrame implements IDataFrame<Row>{
         this.metaInfo = new MetaInfo(conf);
     }
     
+     public DefaultDataFrame(DataFrame table, IMetaInfo metaInfo,State state) {
+        this.table = table;
+        this.metaInfo = metaInfo;
+        this.state = state;
+    }
+     
      public DefaultDataFrame(DataFrame table,IDataFrameConf conf,State state) {
         this.table = table;
         this.metaInfo = new MetaInfo(conf);

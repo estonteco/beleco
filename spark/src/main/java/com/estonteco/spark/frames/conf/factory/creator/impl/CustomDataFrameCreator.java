@@ -8,13 +8,12 @@ package com.estonteco.spark.frames.conf.factory.creator.impl;
 
 import com.estonteco.spark.frames.FrameType;
 import com.estonteco.spark.frames.IDataFrame;
-import com.estonteco.spark.frames.IMetaInfo;
 import com.estonteco.spark.frames.State;
-import com.estonteco.spark.frames.conf.factory.creator.impl.AbstractDataFrameCreator;
 import com.estonteco.spark.frames.conf.impl.ConfProperties;
 import com.estonteco.spark.frames.conf.impl.DefaultFrameConf;
 import com.estonteco.spark.frames.impl.DefaultDataFrame;
 import com.estonteco.spark.frames.impl.MetaInfo;
+import java.util.Arrays;
 import java.util.Map;
 import org.apache.spark.api.java.JavaSparkContext;
 import org.apache.spark.sql.DataFrame;
@@ -30,7 +29,11 @@ public class CustomDataFrameCreator extends AbstractDataFrameCreator{
         Map<String, String> properties = configuration.getProperties();
         String query =getValue(properties, ConfProperties.QUERY, "");
         DataFrame table = context.sql(query);
-        return new DefaultDataFrame(table, configuration, State.INIT);
+        MetaInfo metaInfo = new MetaInfo();
+        metaInfo.setConfiguration(configuration);
+        metaInfo.setAvailableFields(Arrays.asList(table.schema().fields()));
+        metaInfo.setAvailableFieldsNames(Arrays.asList(table.schema().fieldNames()));
+        return new DefaultDataFrame(table, metaInfo, State.INIT);
     }
 
     public FrameType support() {

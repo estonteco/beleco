@@ -19,10 +19,14 @@ import org.apache.spark.sql.types.StructField;
  */
 public class MetaInfo implements IMetaInfo<StructField>{
 
-    private final IDataFrameConf configuration;
-    private final Collection<StructField> availableFields;
-    private final Collection<String> availableFieldsNames;
+    private  IDataFrameConf configuration;
+    private  Collection<StructField> availableFields;
+    private  Collection<String> availableFieldsNames;
 
+    public MetaInfo() {
+    }
+
+    
     public MetaInfo(IDataFrameConf configuration) {
         this.configuration = configuration;
         this.availableFields = Arrays.asList(configuration.getSchema().fields());
@@ -48,5 +52,18 @@ public class MetaInfo implements IMetaInfo<StructField>{
     public Collection<String> getAvailableFieldsNames() {
         return availableFieldsNames;
     }
+    
+    public void setAvailableFields(Collection<StructField> availableFields){
+        this.availableFields = availableFields;
+    }
+    
+    public void setAvailableFieldsNames(Collection<String> availableFieldsNames){
+        this.availableFieldsNames = availableFieldsNames;
+    }
+
+    public void setConfiguration(IDataFrameConf configuration) {
+        this.configuration = configuration;
+    }
+    
     
 }
