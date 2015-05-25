@@ -11,7 +11,9 @@ import com.estonteco.spark.frames.IDataFrame;
 import com.estonteco.spark.frames.State;
 import com.sun.istack.logging.Logger;
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
@@ -49,6 +51,18 @@ public class DataSourceManager implements IDataSourceManager{
         return registeredDataFrames.get(name);
     }
 
+    public Collection<IDataFrame> findByMetrics(Set<String> metricNames) {
+        Set<IDataFrame> frames = new HashSet<IDataFrame>();
+        //todo: check priority data frame
+        for(IDataFrame df: browseAll()){
+            if(df.getMetaInfo().getAvailableFieldsNames().contains(metricNames)){
+                frames.add(df);
+            }
+        }
+        return frames;
+    }
+
+    
     public void handleRegisterException(Exception ex) {
         LOGGER.warning("Some exception", ex);
     }

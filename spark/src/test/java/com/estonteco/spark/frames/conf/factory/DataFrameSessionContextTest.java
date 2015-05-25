@@ -6,6 +6,8 @@
 package com.estonteco.spark.frames.conf.factory;
 
 import com.estonteco.spark.engine.IDataSourceManager;
+import com.estonteco.spark.engine.dto.IMetric;
+import com.estonteco.spark.engine.dto.MetricRows;
 import com.estonteco.spark.engine.impl.DataSourceManager;
 import com.estonteco.spark.frames.IDataFrame;
 import com.estonteco.spark.frames.State;
@@ -115,10 +117,10 @@ public class DataFrameSessionContextTest {
         System.out.println("getCountry");
         IDataFrame df = dataSourceManager.get("Countries");
         Assert.assertNotNull(df);
-        Row ping = (Row) df.ping();
+        IMetric ping = (IMetric) df.ping();
         System.out.println(ping);
-        Collection<Row> execute = df.execute(null);
-        for (Row row : execute) {
+        MetricRows metric = (MetricRows) df.execute(null);
+        for (Row row : metric.getRows()) {
             System.out.println(row);
         }
     }
@@ -130,10 +132,10 @@ public class DataFrameSessionContextTest {
         System.out.println("getUser");
         IDataFrame df = dataSourceManager.get("Users");
         Assert.assertNotNull(df);
-        Row ping = (Row) df.ping();
+        IMetric ping = (IMetric) df.ping();
         System.out.println(ping);
-        Collection<Row> execute = df.execute(null);
-        for (Row row : execute) {
+        MetricRows metric = (MetricRows) df.execute(null);
+        for (Row row : metric.getRows()) {
             System.out.println(row);
         }
     }
@@ -145,8 +147,8 @@ public class DataFrameSessionContextTest {
         System.out.println("getView");
         IDataFrame df = dataSourceManager.get("View");
         Assert.assertNotNull(df);
-        Collection<Row> execute = df.execute(null);
-        for (Row row : execute) {
+        MetricRows metric = (MetricRows) df.execute(null);
+        for (Row row : metric.getRows()) {
             System.out.println(row);
         }
         System.out.println(df.getMetaInfo().getAvailableFields());

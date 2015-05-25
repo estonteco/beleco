@@ -6,19 +6,20 @@
 
 package com.estonteco.spark.frames.impl;
 
+import com.estonteco.spark.engine.dto.IMetric;
+import com.estonteco.spark.engine.dto.MetricRows;
 import com.estonteco.spark.frames.IDataFrame;
 import com.estonteco.spark.frames.IMetaInfo;
 import com.estonteco.spark.frames.State;
 import com.estonteco.spark.frames.conf.IDataFrameConf;
-import java.util.Collection;
+import java.util.Collections;
 import org.apache.spark.sql.DataFrame;
-import org.apache.spark.sql.Row;
 
 /**
  *
  * @author APolokh
  */
-public class DefaultDataFrame implements IDataFrame<Row>{
+public class DefaultDataFrame implements IDataFrame{
 
     private IMetaInfo metaInfo;
     private DataFrame table;
@@ -58,12 +59,12 @@ public class DefaultDataFrame implements IDataFrame<Row>{
         return metaInfo;
     }
 
-    public Row ping() {
-        return table.head();
+    public IMetric ping() {
+        return new MetricRows(Collections.singleton(table.head()));
     }
 
-    public Collection<Row> execute(Object context) {
-        return table.collectAsList();
+    public IMetric execute(Object context) {
+        return new MetricRows(table.collectAsList());
     }
 
     

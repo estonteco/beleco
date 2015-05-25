@@ -5,14 +5,14 @@
  */
 package com.estonteco.spark.frames;
 
-import java.util.Collection;
+import com.estonteco.spark.engine.dto.IMetric;
+
 
 /**
  * Abstraction is based on Spark Data Frame concept.
  * @author mauna
- * @param <T> - type of field
  */
-public interface IDataFrame<T> {
+public interface IDataFrame {
     
     State getState();
     
@@ -20,8 +20,8 @@ public interface IDataFrame<T> {
     
     IMetaInfo getMetaInfo();
     
-    T ping();
+    IMetric ping();
     
-    Collection<T> execute(Object context);
+    IMetric execute(Object context);
     
 }

@@ -2,7 +2,7 @@
 <conf>
     <name>Users</name>
     <type>FILE</type>
-    <cache>true</cache>
+    <cache>false</cache>
     <schema>
         <column name="COUNTRY_ID" type="StringType" nullable="false"/>
         <column name="NAME" type="StringType" nullable="false"/>

@@ -7,6 +7,7 @@ package com.estonteco.spark.engine;
 
 import com.estonteco.spark.frames.IDataFrame;
 import java.util.Collection;
+import java.util.Set;
 
 /**
  *
@@ -23,6 +24,8 @@ public interface IDataSourceManager {
     IDataFrame get(String name);
     
     void handleRegisterException(Exception ex);
+    
+    Collection<IDataFrame> findByMetrics(Set<String> metricNames);
     
     Object ping(String name);
 }
